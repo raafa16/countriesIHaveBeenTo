@@ -1,12 +1,12 @@
 import React, { memo } from "react";
 import {
-  ZoomableGroup,
   Graticule,
   Sphere,
   ComposableMap,
   Geographies,
   Geography,
 } from "react-simple-maps";
+import TooltipPopUp from "./TooltipPopUp";
 
 const geoUrl =
   "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-50m-simplified.json";
@@ -31,9 +31,6 @@ const MapChart = ({ setTooltipContent }) => {
           scale: 147,
         }}
       >
-        {/* <ZoomableGroup zoom={1}> */}
-        {/* <Sphere stroke="#FF5533" strokeWidth={2} /> */}
-
         <Sphere stroke="#E4E5E6" strokeWidth={0.5} />
         <Graticule stroke="#E4E5E6" strokeWidth={0.5} />
 
@@ -48,12 +45,14 @@ const MapChart = ({ setTooltipContent }) => {
                   key={geo.rsmKey}
                   geography={geo}
                   onMouseEnter={() => {
-                    console.log(NAME);
                     setTooltipContent(`${NAME}`);
                   }}
-                  onMouseLeave={() => {
-                    setTooltipContent("");
+                  onClick={() => {
+                    setTooltipContent(<TooltipPopUp name={NAME} />);
                   }}
+                  // onMouseLeave={() => {
+                  //   setTooltipContent("");
+                  // }}
                   style={
                     d
                       ? {
@@ -64,6 +63,7 @@ const MapChart = ({ setTooltipContent }) => {
                           hover: {
                             fill: "#F53",
                             outline: "none",
+                            cursor: "pointer",
                           },
                           pressed: {
                             fill: "#E42",
@@ -78,6 +78,7 @@ const MapChart = ({ setTooltipContent }) => {
                           hover: {
                             fill: "#F53",
                             outline: "none",
+                            cursor: "pointer",
                           },
                           pressed: {
                             fill: "#E42",
@@ -90,7 +91,6 @@ const MapChart = ({ setTooltipContent }) => {
             })
           }
         </Geographies>
-        {/* </ZoomableGroup> */}
       </ComposableMap>
     </>
   );

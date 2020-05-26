@@ -7,18 +7,12 @@ import ReactDOM from "react-dom";
 import ReactTooltip from "react-tooltip";
 import MapChart from "./MapChart";
 
-const mapContainer = {
-  margin: "0 3rem",
-  padding: "0",
-  border: "2px solid",
-};
-
 function Home() {
   const [content, setContent] = useState("");
   return (
     <div>
       <MapChart setTooltipContent={setContent} />
-      <ReactTooltip>{content}</ReactTooltip>
+      <ReactTooltip clickable={true}>{content}</ReactTooltip>
     </div>
   );
 }
