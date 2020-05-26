@@ -23,8 +23,8 @@ const MapChart = ({ setTooltipContent }) => {
   return (
     <>
       <ComposableMap
-        // width={1920}
-        // height={1080}
+        width={900}
+        height={400}
         data-tip=""
         projectionConfig={{
           rotate: [-10, 0, 0],
@@ -58,7 +58,7 @@ const MapChart = ({ setTooltipContent }) => {
                     d
                       ? {
                           default: {
-                            fill: "#F53",
+                            fill: "#03B3B3",
                             outline: "none",
                           },
                           hover: {
