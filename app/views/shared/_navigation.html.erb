@@ -8,9 +8,7 @@
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
       <ul class="navbar-nav">
         <% if admin_signed_in? %>
-          <li class="nav-item px-2 py-2">
-            Logged in as <strong><%= current_admin.email %></strong>
-          </li>
+          <li class="nav-item px-2 py-2">Logged in as <strong><%= current_admin.email %></strong></li>
           <li class="nav-item">
             <%= link_to destroy_admin_session_path, method: :delete, class: "nav-link" do %>
               <span>
