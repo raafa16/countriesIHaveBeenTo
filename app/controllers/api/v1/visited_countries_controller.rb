@@ -2,7 +2,7 @@ class Api::V1::VisitedCountriesController < ApplicationController
   before_action :authenticate_admin!, :set_visited_country, only: [:show, :edit, :update, :destroy]
 
   def index
-    @visited_countries = current_admin.visited_countries.all
+    @visited_countries = VisitedCountry.all
   end
 
   def show
