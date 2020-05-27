@@ -7,7 +7,7 @@ import ReactDOM from "react-dom";
 import ReactTooltip from "react-tooltip";
 import MapChart from "./MapChart";
 
-function Home() {
+function App() {
   const [content, setContent] = useState("");
   const [condition, setCondition] = useState("");
 
@@ -39,7 +39,7 @@ function Home() {
 
 document.addEventListener("DOMContentLoaded", () => {
   ReactDOM.render(
-    <Home name="React" />,
+    <App />,
     document.body.appendChild(document.createElement("div"))
   );
 });

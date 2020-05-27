@@ -4,6 +4,7 @@ class Api::V1::VisitedCountriesController < ApplicationController
   def index
     @visited_countries = current_admin.visited_countries.all
   end
+
   def show
     if authorized?
       respond_to do |format|
@@ -15,7 +16,7 @@ class Api::V1::VisitedCountriesController < ApplicationController
   end
 
   def create
-    @visited_country = current_user.visited_countries.build(visited_country_params)
+    @visited_country = current_admin.visited_countries.build(visited_country_params)
     if authorized?
       respond_to do |format|
         if @visited_country.save

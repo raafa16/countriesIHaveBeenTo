@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       resources :visited_countries, only: [:index, :show, :create, :update, :destroy]
+      get '/logged_in', to: 'auth#logged_in?'
     end
   end
 end

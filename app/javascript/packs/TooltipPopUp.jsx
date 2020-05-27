@@ -13,6 +13,7 @@ class TooltipPopUp extends React.Component {
         /> */}
         <Card.Body>
           <Card.Title>{this.props.name}</Card.Title>
+          <Card.Title>{this.props.loggedIn}</Card.Title>
         </Card.Body>
         <Card.Body
           style={{
@@ -20,14 +21,16 @@ class TooltipPopUp extends React.Component {
             justifyContent: "space-between",
           }}
         >
-          <Button
-            variant="dark"
-            style={{
-              fontSize: "10px",
-            }}
-          >
-            <FontAwesomeIcon icon={faMapMarkerAlt} /> Mark as visited
-          </Button>
+          {this.props.loggedIn && (
+            <Button
+              variant="dark"
+              style={{
+                fontSize: "10px",
+              }}
+            >
+              <FontAwesomeIcon icon={faMapMarkerAlt} /> Mark as visited
+            </Button>
+          )}
           <Button
             variant="dark"
             style={{
