@@ -44,7 +44,6 @@ class MapChart extends React.Component {
     axios
       .get("/api/v1/visited_countries")
       .then((response) => {
-        console.log(response);
         const visitedCountries = response.data;
         this.setState({ visitedCountries });
       })
