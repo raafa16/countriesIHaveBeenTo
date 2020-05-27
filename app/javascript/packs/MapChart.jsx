@@ -11,7 +11,7 @@ import TooltipPopUp from "./TooltipPopUp";
 const geoUrl =
   "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-50m-simplified.json";
 
-const MapChart = ({ setTooltipContent }) => {
+const MapChart = ({ setTooltipContent, setTooltipCondition }) => {
   // const [data, setData] = useState([]);
 
   // useEffect(() => {
@@ -45,14 +45,15 @@ const MapChart = ({ setTooltipContent }) => {
                   key={geo.rsmKey}
                   geography={geo}
                   onMouseEnter={() => {
+                    setTooltipCondition(false);
+                    setTooltipContent("");
                     setTooltipContent(`${NAME}`);
                   }}
                   onClick={() => {
+                    setTooltipCondition(true);
+                    setTooltipContent("");
                     setTooltipContent(<TooltipPopUp name={NAME} />);
                   }}
-                  // onMouseLeave={() => {
-                  //   setTooltipContent("");
-                  // }}
                   style={
                     d
                       ? {

@@ -17,3 +17,5 @@ require("channels");
 require("bootstrap");
 import "bootstrap/dist/css/bootstrap";
 import "@fortawesome/fontawesome-free";
+import "@fortawesome/react-fontawesome";
+import "@fortawesome/free-solid-svg-icons";
