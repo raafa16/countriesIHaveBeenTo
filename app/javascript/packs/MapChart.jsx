@@ -1,5 +1,7 @@
 import React, { memo } from "react";
+import _ from "lodash";
 import axios from "axios";
+import setAxiosHeaders from "./AxiosHeaders";
 import {
   Graticule,
   Sphere,
@@ -21,6 +23,8 @@ class MapChart extends React.Component {
     };
     this.getVisitedCountries = this.getVisitedCountries.bind(this);
     this.getLoggedInStatus = this.getLoggedInStatus.bind(this);
+    this.markAsVisited = this.markAsVisited.bind(this);
+    this.unmarkAsVisited = this.unmarkAsVisited.bind(this);
   }
 
   componentDidMount() {
@@ -52,6 +56,40 @@ class MapChart extends React.Component {
       });
   }
 
+  markAsVisited(name, iso_a3) {
+    setAxiosHeaders();
+    axios
+      .post("/api/v1/visited_countries", {
+        visited_country: {
+          name: name,
+          iso_a3: iso_a3,
+        },
+      })
+      .then((response) => {
+        const visitedCountry = response.data;
+        let visitedCountries = _.cloneDeep(this.state.visitedCountries);
+        visitedCountries.push(visitedCountry);
+        this.setState({
+          visitedCountries,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  unmarkAsVisited(id) {
+    setAxiosHeaders();
+    axios
+      .delete(`/api/v1/visited_countries/${id}`)
+      .then((response) => {
+        this.getVisitedCountries();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   render() {
     const { setTooltipCondition, setTooltipContent } = this.props;
     return (
@@ -72,7 +110,11 @@ class MapChart extends React.Component {
             {({ geographies }) =>
               geographies.map((geo) => {
                 const { NAME, ISO_A3 } = geo.properties;
-                const d = "USA" == ISO_A3;
+                const visited = this.state.visitedCountries.find((vc) =>
+                  _.isEqual(vc.iso_a3, geo.properties.ISO_A3)
+                );
+
+                console.log(visited);
 
                 return (
                   <Geography
@@ -88,13 +130,18 @@ class MapChart extends React.Component {
                       setTooltipContent("");
                       setTooltipContent(
                         <TooltipPopUp
+                          id={visited ? visited.id : null}
                           name={NAME}
+                          iso_a3={ISO_A3}
+                          visited={visited}
+                          markAsVisited={this.markAsVisited}
+                          unmarkAsVisited={this.unmarkAsVisited}
                           loggedIn={this.state.loggedIn}
                         />
                       );
                     }}
                     style={
-                      d
+                      visited
                         ? {
                             default: {
                               fill: "#03B3B3",
