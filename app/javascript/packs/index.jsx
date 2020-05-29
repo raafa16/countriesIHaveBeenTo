@@ -9,30 +9,13 @@ import MapChart from "./MapChart";
 
 function App() {
   const [content, setContent] = useState("");
-  const [condition, setCondition] = useState("");
 
   return (
     <div>
-      <MapChart
-        setTooltipContent={setContent}
-        setTooltipCondition={setCondition}
-      />
-      {condition ? (
-        <ReactTooltip
-          clickable={true}
-          place="right"
-          type="dark"
-          effect="float"
-          delayHide={500}
-          delayUpdate={500}
-        >
-          {content}
-        </ReactTooltip>
-      ) : (
-        <ReactTooltip place="right" type="dark" effect="float">
-          {content}
-        </ReactTooltip>
-      )}
+      <MapChart setTooltipContent={setContent} />
+      <ReactTooltip type="dark" effect="float">
+        {content}
+      </ReactTooltip>
     </div>
   );
 }

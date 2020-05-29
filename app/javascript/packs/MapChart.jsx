@@ -9,7 +9,7 @@ import {
   Geographies,
   Geography,
 } from "react-simple-maps";
-import TooltipPopUp from "./TooltipPopUp";
+import ModalPopUp from "./ModalPopUp";
 
 const geoUrl =
   "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-50m-simplified.json";
@@ -20,11 +20,20 @@ class MapChart extends React.Component {
     this.state = {
       loggedIn: false,
       visitedCountries: [],
+      modalShow: false,
+      selectedCountry: {
+        id: null,
+        name: "",
+        iso_a3: "",
+        visited: false,
+      },
     };
     this.getVisitedCountries = this.getVisitedCountries.bind(this);
     this.getLoggedInStatus = this.getLoggedInStatus.bind(this);
     this.markAsVisited = this.markAsVisited.bind(this);
     this.unmarkAsVisited = this.unmarkAsVisited.bind(this);
+    this.showModal = this.showModal.bind(this);
+    this.hideModal = this.hideModal.bind(this);
   }
 
   componentDidMount() {
@@ -69,9 +78,15 @@ class MapChart extends React.Component {
         const visitedCountry = response.data;
         let visitedCountries = _.cloneDeep(this.state.visitedCountries);
         visitedCountries.push(visitedCountry);
-        this.setState({
-          visitedCountries,
-        });
+        this.setState(
+          {
+            visitedCountries,
+            modalShow: false,
+          },
+          () => {
+            console.log(this.state);
+          }
+        );
       })
       .catch((error) => {
         console.log(error);
@@ -83,15 +98,40 @@ class MapChart extends React.Component {
     axios
       .delete(`/api/v1/visited_countries/${id}`)
       .then((response) => {
-        this.getVisitedCountries();
+        this.setState(
+          {
+            modalShow: false,
+          },
+          () => {
+            this.getVisitedCountries();
+          }
+        );
       })
       .catch((error) => {
         console.log(error);
       });
   }
 
+  showModal(id = null, name, iso_a3, visited) {
+    this.setState({
+      modalShow: true,
+      selectedCountry: {
+        id: id,
+        name: name,
+        iso_a3: iso_a3,
+        visited: visited,
+      },
+    });
+  }
+
+  hideModal() {
+    this.setState({
+      modalShow: false,
+    });
+  }
+
   render() {
-    const { setTooltipCondition, setTooltipContent } = this.props;
+    const { setTooltipContent } = this.props;
     return (
       <>
         <ComposableMap
@@ -114,30 +154,21 @@ class MapChart extends React.Component {
                   _.isEqual(vc.iso_a3, geo.properties.ISO_A3)
                 );
 
-                console.log(visited);
-
                 return (
                   <Geography
                     key={geo.rsmKey}
                     geography={geo}
                     onMouseEnter={() => {
-                      setTooltipCondition(false);
                       setTooltipContent("");
                       setTooltipContent(`${NAME}`);
                     }}
                     onClick={() => {
-                      setTooltipCondition(true);
                       setTooltipContent("");
-                      setTooltipContent(
-                        <TooltipPopUp
-                          id={visited ? visited.id : null}
-                          name={NAME}
-                          iso_a3={ISO_A3}
-                          visited={visited}
-                          markAsVisited={this.markAsVisited}
-                          unmarkAsVisited={this.unmarkAsVisited}
-                          loggedIn={this.state.loggedIn}
-                        />
+                      this.showModal(
+                        visited ? visited.id : null,
+                        NAME,
+                        ISO_A3,
+                        visited
                       );
                     }}
                     style={
@@ -179,6 +210,17 @@ class MapChart extends React.Component {
             }
           </Geographies>
         </ComposableMap>
+        <ModalPopUp
+          show={this.state.modalShow}
+          hide={this.hideModal}
+          id={this.state.selectedCountry.id}
+          name={this.state.selectedCountry.name}
+          iso_a3={this.state.selectedCountry.iso_a3}
+          visited={this.state.selectedCountry.visited}
+          markAsVisited={this.markAsVisited}
+          unmarkAsVisited={this.unmarkAsVisited}
+          loggedIn={this.state.loggedIn}
+        />
       </>
     );
   }

@@ -1,9 +1,9 @@
 import React from "react";
-import { Card, Button } from "react-bootstrap";
+import { Modal, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 
-class TooltipPopUp extends React.Component {
+class ModalPopUp extends React.Component {
   constructor(props) {
     super(props);
     this.handleMarkAsVisited = this.handleMarkAsVisited.bind(this);
@@ -20,16 +20,18 @@ class TooltipPopUp extends React.Component {
 
   render() {
     return (
-      <Card style={{ width: "18rem", color: "#212529" }}>
-        {/* <Card.Img
-          variant="top"
-          src="https://thumbs.dreamstime.com/b/dream-vacation-ahead-22868361.jpg"
-        /> */}
-        <Card.Body>
-          <Card.Title>{this.props.name}</Card.Title>
-          <Card.Title>{this.props.loggedIn}</Card.Title>
-        </Card.Body>
-        <Card.Body
+      <Modal
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+        show={this.props.show}
+        onHide={this.props.hide}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            {this.props.name}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body
           style={{
             display: "flex",
             justifyContent: "space-between",
@@ -37,38 +39,21 @@ class TooltipPopUp extends React.Component {
         >
           {this.props.loggedIn &&
             (this.props.visited ? (
-              <Button
-                variant="dark"
-                style={{
-                  fontSize: "10px",
-                }}
-                onClick={this.handleUnmarkAsVisited}
-              >
+              <Button variant="dark" onClick={this.handleUnmarkAsVisited}>
                 <FontAwesomeIcon icon={faMapMarkerAlt} /> Unmark as visited
               </Button>
             ) : (
-              <Button
-                variant="dark"
-                style={{
-                  fontSize: "10px",
-                }}
-                onClick={this.handleMarkAsVisited}
-              >
+              <Button variant="dark" onClick={this.handleMarkAsVisited}>
                 <FontAwesomeIcon icon={faMapMarkerAlt} /> Mark as visited
               </Button>
             ))}
-          <Button
-            variant="dark"
-            style={{
-              fontSize: "10px",
-            }}
-          >
+          <Button variant="dark">
             <FontAwesomeIcon icon={faEye} /> See 353 memories
           </Button>
-        </Card.Body>
-      </Card>
+        </Modal.Body>
+      </Modal>
     );
   }
 }
 
-export default TooltipPopUp;
+export default ModalPopUp;
