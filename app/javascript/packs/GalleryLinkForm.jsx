@@ -50,12 +50,9 @@ class GalleryLink extends React.Component {
               placeholder="Add the link to your gallery here..."
               required
             />
-            <Form.Control.Feedback type="invalid">
-              Please input a valid gallery link.
-            </Form.Control.Feedback>
           </Form.Group>
           <Form.Group as={Col} md="4">
-            <Button type="submit" variant="dark">
+            <Button type="submit" variant="outline-dark">
               Add gallery link
             </Button>
           </Form.Group>

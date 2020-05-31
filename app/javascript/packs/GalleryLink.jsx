@@ -46,7 +46,7 @@ class GalleryLink extends React.Component {
           />
         </td>
         <td className="text-right">
-          <Button variant="dark" onClick={this.handleDestroy}>
+          <Button variant="outline-danger" onClick={this.handleDestroy}>
             <FontAwesomeIcon icon={faTrashAlt} />
           </Button>
         </td>

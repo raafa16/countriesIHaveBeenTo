@@ -88,11 +88,14 @@ class ModalPopUp extends React.Component {
         <Modal.Body style={{ display: "flex", justifyContent: "center" }}>
           {loggedIn &&
             (visited ? (
-              <Button variant="dark" onClick={this.handleUnmarkAsVisited}>
+              <Button
+                variant="outline-dark"
+                onClick={this.handleUnmarkAsVisited}
+              >
                 <FontAwesomeIcon icon={faMap} /> Unmark as visited
               </Button>
             ) : (
-              <Button variant="dark" onClick={this.handleMarkAsVisited}>
+              <Button variant="outline-dark" onClick={this.handleMarkAsVisited}>
                 <FontAwesomeIcon icon={faMapMarkedAlt} /> Mark as visited
               </Button>
             ))}
