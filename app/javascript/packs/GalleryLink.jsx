@@ -10,6 +10,9 @@ class GalleryLink extends React.Component {
   constructor(props) {
     super(props);
     this.handleDestroy = this.handleDestroy.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.updateGalleryLink = this.updateGalleryLink.bind(this);
+    this.galleryLinkRef = React.createRef();
   }
 
   handleDestroy() {
@@ -29,17 +32,42 @@ class GalleryLink extends React.Component {
         });
     }
   }
+
+  handleChange() {
+    this.updateGalleryLink();
+  }
+
+  updateGalleryLink() {
+    const { galleryLink } = this.props;
+    setAxiosHeaders();
+    axios
+      .put(
+        `/api/v1/visited_countries/${galleryLink.visited_country_id}/gallery_links/${galleryLink.id}`,
+        {
+          gallery_link: {
+            link: this.galleryLinkRef.current.value,
+          },
+        }
+      )
+      .then((response) => {
+        this.props.getGalleryLinks();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
   render() {
     const { galleryLink, loggedIn } = this.props;
     return (
       <tr>
         <td>
           <Form.Control
-            id={`galleryLink__title-${galleryLink.id}`}
-            name="link"
-            ref={this.linkRef}
+            id={`${galleryLink.id}`}
+            name="galleryLink"
+            ref={this.galleryLinkRef}
             type="text"
             disabled={!loggedIn}
+            onChange={this.handleChange}
             defaultValue={galleryLink.link}
             placeholder="Add the link to your gallery here..."
             required

@@ -24,7 +24,6 @@ class GalleryLink extends React.Component {
         }
       )
       .then((response) => {
-        console.log(response);
         const galleryLink = response.data;
         this.props.createGalleryLink(galleryLink);
       })
