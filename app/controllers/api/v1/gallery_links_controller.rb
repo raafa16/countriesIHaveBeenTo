@@ -1,7 +1,12 @@
 class Api::V1::GalleryLinksController < ApplicationController
   before_action :authenticate_admin!, only: [:create, :update, :destroy]
-  before_action :set_visited_country, only: [:create]
+  before_action :set_visited_country, only: [:index, :create]
   before_action :set_gallery_link, only: [:update, :destroy]
+
+  def index
+    @gallery_links = @visited_country.gallery_links
+    render json: @gallery_links
+  end
 
   def create
     @gallery_link = @visited_country.gallery_links.build(gallery_link_params)
@@ -11,7 +16,6 @@ class Api::V1::GalleryLinksController < ApplicationController
         else
           render json: @gallery_link.errors, status: :unprocessable_entity
         end
-      end
     else
       handle_unauthorized
     end

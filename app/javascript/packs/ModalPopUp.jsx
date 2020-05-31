@@ -18,12 +18,30 @@ class ModalPopUp extends React.Component {
     this.state = {
       galleryLinks: [],
     };
-    // this.getGalleryLinks = this.getGalleryLinks.bind(this);
+    this.getGalleryLinks = this.getGalleryLinks.bind(this);
     this.createGalleryLink = this.createGalleryLink.bind(this);
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.id !== prevProps.id) this.getGalleryLinks();
+  }
+
+  getGalleryLinks() {
+    axios
+      .get(`/api/v1/visited_countries/${this.props.id}/gallery_links`)
+      .then((response) => {
+        const galleryLinks = response.data;
+        this.setState({
+          galleryLinks: galleryLinks,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   createGalleryLink(galleryLink) {
-    const galleryLinks = [galleryLinks, ...this.state.galleryLinks];
+    const galleryLinks = [galleryLink, ...this.state.galleryLinks];
     this.setState({ galleryLinks });
   }
 
@@ -46,7 +64,7 @@ class ModalPopUp extends React.Component {
 
   render() {
     const { show, hide } = this.props;
-    const { name, loggedIn, iso_a2, visited } = this.props;
+    const { id, name, loggedIn, iso_a2, visited } = this.props;
     return (
       <Modal
         aria-labelledby="contained-modal-title-vcenter"
@@ -81,7 +99,10 @@ class ModalPopUp extends React.Component {
         </Modal.Body>
         {visited && (
           <Modal.Footer style={{ display: "flex", justifyContent: "center" }}>
-            <GalleryLinkForm createGalleryLink={this.createGalleryLink} />
+            <GalleryLinkForm
+              createGalleryLink={this.createGalleryLink}
+              visitedCountryId={id}
+            />
             {!_.isEmpty(this.state.galleryLinks) ? (
               <GalleryLinks>
                 {this.state.galleryLinks.map((galleryLink) => (

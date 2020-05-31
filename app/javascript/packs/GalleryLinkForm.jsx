@@ -15,12 +15,16 @@ class GalleryLink extends React.Component {
     e.preventDefault();
     setAxiosHeaders();
     axios
-      .post(`/api/v1/${this.props.visited_country_id}/gallery_links`, {
-        gallery_link: {
-          link: this.linkRef.current.value,
-        },
-      })
+      .post(
+        `/api/v1/visited_countries/${this.props.visitedCountryId}/gallery_links`,
+        {
+          gallery_link: {
+            link: this.linkRef.current.value,
+          },
+        }
+      )
       .then((response) => {
+        console.log(response);
         const galleryLink = response.data;
         this.props.createGalleryLink(galleryLink);
       })
@@ -41,6 +45,7 @@ class GalleryLink extends React.Component {
             <Form.Control
               id="link"
               name="link"
+              ref={this.linkRef}
               type="text"
               placeholder="Add the link to your gallery here..."
               required
@@ -50,7 +55,9 @@ class GalleryLink extends React.Component {
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group as={Col} md="4">
-            <Button variant="dark">Add gallery link</Button>
+            <Button type="submit" variant="dark">
+              Add gallery link
+            </Button>
           </Form.Group>
         </Form.Row>
       </Form>
