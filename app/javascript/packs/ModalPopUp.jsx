@@ -22,6 +22,7 @@ class ModalPopUp extends React.Component {
     return (
       <Modal
         aria-labelledby="contained-modal-title-vcenter"
+        restoreFocus={false}
         centered
         show={this.props.show}
         onHide={this.props.hide}
