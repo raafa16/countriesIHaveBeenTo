@@ -6,11 +6,10 @@ class Api::V1::GalleryLinksController < ApplicationController
   def create
     @gallery_link = @visited_country.gallery_links.build(gallery_link_params)
     if authorized?
-      respond_to do |format|
         if @gallery_link.save
-          GalleryLinkSerializer.new(@gallery_link).serializable_hash.to_json
+          render json: @gallery_link
         else
-          format.json { render json: @gallery_link.errors, status: :unprocessable_entity }
+          render json: @gallery_link.errors, status: :unprocessable_entity
         end
       end
     else
@@ -20,13 +19,11 @@ class Api::V1::GalleryLinksController < ApplicationController
 
   def update
     if authorized?
-      respond_to do |format|
         if @gallery_link.update(gallery_link_params)
-          GalleryLinkSerializer.new(@gallery_link).serializable_hash.to_json
+          render json: @gallery_link
         else
-          format.json { render json: @gallery_link.errors, status: :unprocessable_entity }
+          render json: @gallery_link.errors, status: :unprocessable_entity
         end
-      end
     else
         handle_unauthorized
     end

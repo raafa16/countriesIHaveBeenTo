@@ -1,20 +1,19 @@
 class Api::V1::VisitedCountriesController < ApplicationController
-  before_action :authenticate_admin!, :set_visited_country, only: [:create, :destroy]
+  before_action :authenticate_admin!, only: [:create, :destroy]
+  before_action :set_visited_country, only: [:destroy]
 
   def index
     @visited_countries = VisitedCountry.all
-    VisitedCountrySerializer.new(@visited_countries).serializable_hash.to_json
+    render json: @visited_countries
   end
 
   def create
     @visited_country = current_admin.visited_countries.build(visited_country_params)
     if authorized?
-      respond_to do |format|
-        if @visited_country.save
-          VisitedCountrySerializer.new(@visited_country).serializable_hash.to_json
-        else
-          format.json { render json: @visited_country.errors, status: :unprocessable_entity }
-        end
+      if @visited_country.save
+        render json: @visited_country
+      else
+        render json: @visited_country.errors, status: :unprocessable_entity
       end
     else
       handle_unauthorized
@@ -51,6 +50,6 @@ class Api::V1::VisitedCountriesController < ApplicationController
   end
 
   def visited_country_params
-    params.require(:visited_country).permit(:name, :iso_a3)
+    params.require(:visited_country).permit(:id, :name, :iso_a3)
   end
 end
