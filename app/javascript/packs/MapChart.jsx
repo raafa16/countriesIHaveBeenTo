@@ -9,6 +9,7 @@ import {
   Geographies,
   Geography,
 } from "react-simple-maps";
+import { Spinner } from "react-bootstrap";
 import ModalPopUp from "./ModalPopUp";
 
 const geoUrl =
@@ -24,9 +25,11 @@ class MapChart extends React.Component {
       selectedCountry: {
         id: null,
         name: "",
+        iso_a2: "",
         iso_a3: "",
         visited: false,
       },
+      loading: true,
     };
     this.getVisitedCountries = this.getVisitedCountries.bind(this);
     this.getLoggedInStatus = this.getLoggedInStatus.bind(this);
@@ -46,7 +49,7 @@ class MapChart extends React.Component {
       .get("/api/v1/logged_in?")
       .then((response) => {
         const loggedIn = response.data.logged_in;
-        this.setState({ loggedIn });
+        this.setState({ loggedIn, loading: false });
       })
       .catch((error) => {
         console.log(error);
@@ -58,7 +61,7 @@ class MapChart extends React.Component {
       .get("/api/v1/visited_countries")
       .then((response) => {
         const visitedCountries = response.data;
-        this.setState({ visitedCountries });
+        this.setState({ visitedCountries, loading: false });
       })
       .catch((error) => {
         console.log(error);
@@ -82,6 +85,7 @@ class MapChart extends React.Component {
           {
             visitedCountries,
             modalShow: false,
+            loading: false,
           },
           () => {
             console.log(this.state);
@@ -101,6 +105,7 @@ class MapChart extends React.Component {
         this.setState(
           {
             modalShow: false,
+            loading: false,
           },
           () => {
             this.getVisitedCountries();
@@ -112,12 +117,13 @@ class MapChart extends React.Component {
       });
   }
 
-  showModal(id = null, name, iso_a3, visited) {
+  showModal(id = null, name, iso_a2, iso_a3, visited) {
     this.setState({
       modalShow: true,
       selectedCountry: {
         id: id,
         name: name,
+        iso_a2: iso_a2,
         iso_a3: iso_a3,
         visited: visited,
       },
@@ -132,95 +138,104 @@ class MapChart extends React.Component {
 
   render() {
     const { setTooltipContent } = this.props;
+    const { loading } = this.state;
     return (
       <>
-        <ComposableMap
-          width={900}
-          height={400}
-          data-tip=""
-          projectionConfig={{
-            rotate: [-10, 0, 0],
-            scale: 147,
-          }}
-        >
-          <Sphere stroke="#E4E5E6" strokeWidth={0.5} />
-          <Graticule stroke="#E4E5E6" strokeWidth={0.5} />
+        {loading ? (
+          <Spinner animation="border" variant="info" />
+        ) : (
+          <>
+            <ComposableMap
+              width={900}
+              height={400}
+              data-tip=""
+              projectionConfig={{
+                rotate: [-10, 0, 0],
+                scale: 147,
+              }}
+            >
+              <Sphere stroke="#E4E5E6" strokeWidth={0.5} />
+              <Graticule stroke="#E4E5E6" strokeWidth={0.5} />
 
-          <Geographies geography={geoUrl}>
-            {({ geographies }) =>
-              geographies.map((geo) => {
-                const { NAME, ISO_A3 } = geo.properties;
-                const visited = this.state.visitedCountries.find((vc) =>
-                  _.isEqual(vc.iso_a3, geo.properties.ISO_A3)
-                );
+              <Geographies geography={geoUrl}>
+                {({ geographies }) =>
+                  geographies.map((geo) => {
+                    const { NAME, ISO_A2, ISO_A3 } = geo.properties;
+                    const visited = this.state.visitedCountries.find((vc) =>
+                      _.isEqual(vc.iso_a3, geo.properties.ISO_A3)
+                    );
 
-                return (
-                  <Geography
-                    key={geo.rsmKey}
-                    geography={geo}
-                    onMouseEnter={() => {
-                      setTooltipContent("");
-                      setTooltipContent(`${NAME}`);
-                    }}
-                    onClick={() => {
-                      setTooltipContent("");
-                      this.showModal(
-                        visited ? visited.id : null,
-                        NAME,
-                        ISO_A3,
-                        visited
-                      );
-                    }}
-                    style={
-                      visited
-                        ? {
-                            default: {
-                              fill: "#03B3B3",
-                              outline: "none",
-                            },
-                            hover: {
-                              fill: "#F53",
-                              outline: "none",
-                              cursor: "pointer",
-                            },
-                            pressed: {
-                              fill: "#E42",
-                              outline: "none",
-                            },
-                          }
-                        : {
-                            default: {
-                              fill: "#D6D6DA",
-                              outline: "none",
-                            },
-                            hover: {
-                              fill: "#F53",
-                              outline: "none",
-                              cursor: "pointer",
-                            },
-                            pressed: {
-                              fill: "#E42",
-                              outline: "none",
-                            },
-                          }
-                    }
-                  />
-                );
-              })
-            }
-          </Geographies>
-        </ComposableMap>
-        <ModalPopUp
-          show={this.state.modalShow}
-          hide={this.hideModal}
-          id={this.state.selectedCountry.id}
-          name={this.state.selectedCountry.name}
-          iso_a3={this.state.selectedCountry.iso_a3}
-          visited={this.state.selectedCountry.visited}
-          markAsVisited={this.markAsVisited}
-          unmarkAsVisited={this.unmarkAsVisited}
-          loggedIn={this.state.loggedIn}
-        />
+                    return (
+                      <Geography
+                        key={geo.rsmKey}
+                        geography={geo}
+                        onMouseEnter={() => {
+                          setTooltipContent("");
+                          setTooltipContent(`${NAME}`);
+                        }}
+                        onClick={() => {
+                          setTooltipContent("");
+                          this.showModal(
+                            visited ? visited.id : null,
+                            NAME,
+                            ISO_A2,
+                            ISO_A3,
+                            visited
+                          );
+                        }}
+                        style={
+                          visited
+                            ? {
+                                default: {
+                                  fill: "#03B3B3",
+                                  outline: "none",
+                                },
+                                hover: {
+                                  fill: "#F53",
+                                  outline: "none",
+                                  cursor: "pointer",
+                                },
+                                pressed: {
+                                  fill: "#E42",
+                                  outline: "none",
+                                },
+                              }
+                            : {
+                                default: {
+                                  fill: "#D6D6DA",
+                                  outline: "none",
+                                },
+                                hover: {
+                                  fill: "#F53",
+                                  outline: "none",
+                                  cursor: "pointer",
+                                },
+                                pressed: {
+                                  fill: "#E42",
+                                  outline: "none",
+                                },
+                              }
+                        }
+                      />
+                    );
+                  })
+                }
+              </Geographies>
+            </ComposableMap>
+            <ModalPopUp
+              show={this.state.modalShow}
+              hide={this.hideModal}
+              id={this.state.selectedCountry.id}
+              name={this.state.selectedCountry.name}
+              iso_a2={this.state.selectedCountry.iso_a2}
+              iso_a3={this.state.selectedCountry.iso_a3}
+              visited={this.state.selectedCountry.visited}
+              markAsVisited={this.markAsVisited}
+              unmarkAsVisited={this.unmarkAsVisited}
+              loggedIn={this.state.loggedIn}
+            />
+          </>
+        )}
       </>
     );
   }

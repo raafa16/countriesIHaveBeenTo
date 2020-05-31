@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Image } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 
@@ -19,18 +19,24 @@ class ModalPopUp extends React.Component {
   }
 
   render() {
+    const { show, hide } = this.props;
+    const { name, loggedIn, iso_a2, visited } = this.props;
     return (
       <Modal
         aria-labelledby="contained-modal-title-vcenter"
         restoreFocus={false}
         centered
-        show={this.props.show}
-        onHide={this.props.hide}
+        show={show}
+        onHide={hide}
       >
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-vcenter">
-            {this.props.name}
-          </Modal.Title>
+        <Modal.Header style={{ display: "flex" }} closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">{name}</Modal.Title>
+          <Image
+            roundedCircle
+            fluid
+            style={{ width: "34px", height: "34px", marginLeft: "0.5rem" }}
+            src={`https://www.countryflags.io/${iso_a2}/shiny/64.png`}
+          />
         </Modal.Header>
         <Modal.Body
           style={{
@@ -38,8 +44,8 @@ class ModalPopUp extends React.Component {
             justifyContent: "space-between",
           }}
         >
-          {this.props.loggedIn &&
-            (this.props.visited ? (
+          {loggedIn &&
+            (visited ? (
               <Button variant="dark" onClick={this.handleUnmarkAsVisited}>
                 <FontAwesomeIcon icon={faMapMarkerAlt} /> Unmark as visited
               </Button>
