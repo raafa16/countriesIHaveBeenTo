@@ -2,6 +2,7 @@ import React, { memo } from "react";
 import _ from "lodash";
 import axios from "axios";
 import setAxiosHeaders from "./AxiosHeaders";
+import { scaleLinear } from "d3-scale";
 import {
   Graticule,
   Sphere,
@@ -13,6 +14,8 @@ import ModalPopUp from "./ModalPopUp";
 
 const geoUrl =
   "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-50m-simplified.json";
+
+const colorScale = scaleLinear().domain([0, 10]).range(["#03B3B3", "#016d6d"]);
 
 class MapChart extends React.Component {
   constructor(props) {
@@ -168,6 +171,8 @@ class MapChart extends React.Component {
                   _.isEqual(vc.iso_a3, geo.properties.ISO_A3)
                 );
 
+                console.log(visited);
+
                 return (
                   <Geography
                     key={geo.rsmKey}
@@ -193,7 +198,9 @@ class MapChart extends React.Component {
                       visited
                         ? {
                             default: {
-                              fill: "#03B3B3",
+                              fill: !_.isEmpty(visited.gallery_links)
+                                ? colorScale(visited.gallery_links.length)
+                                : "#03B3B3",
                               outline: "none",
                             },
                             hover: {
