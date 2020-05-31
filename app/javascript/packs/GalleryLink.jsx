@@ -2,7 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Form, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import {
+  faTrashAlt,
+  faExternalLinkAlt,
+} from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import setAxiosHeaders from "./AxiosHeaders";
 
@@ -73,7 +76,13 @@ class GalleryLink extends React.Component {
             required
           />
         </td>
-        <td className="text-right">
+        <td
+          className="text-right"
+          style={{ display: "flex", justifyContent: "space-evenly" }}
+        >
+          <Button variant="outline-success" onClick={this.handleDestroy}>
+            <FontAwesomeIcon icon={faExternalLinkAlt} />
+          </Button>
           <Button variant="outline-danger" onClick={this.handleDestroy}>
             <FontAwesomeIcon icon={faTrashAlt} />
           </Button>
