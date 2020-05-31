@@ -23,7 +23,7 @@ class ModalPopUp extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.id !== prevProps.id) this.getGalleryLinks();
+    if (this.props.id !== prevProps.id && this.props.id) this.getGalleryLinks();
   }
 
   getGalleryLinks() {
