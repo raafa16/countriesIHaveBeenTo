@@ -68,12 +68,13 @@ class MapChart extends React.Component {
       });
   }
 
-  markAsVisited(name, iso_a3) {
+  markAsVisited(name, iso_a2, iso_a3) {
     setAxiosHeaders();
     axios
       .post("/api/v1/visited_countries", {
         visited_country: {
           name: name,
+          iso_a2: iso_a2,
           iso_a3: iso_a3,
         },
       })
@@ -84,8 +85,13 @@ class MapChart extends React.Component {
         this.setState(
           {
             visitedCountries,
-            modalShow: false,
-            loading: false,
+            selectedCountry: {
+              id: visitedCountry.id,
+              name: visitedCountry.name,
+              iso_a2: visitedCountry.iso_a2,
+              iso_a3: visitedCountry.iso_a3,
+              visited: visitedCountry,
+            },
           },
           () => {
             console.log(this.state);
@@ -97,15 +103,20 @@ class MapChart extends React.Component {
       });
   }
 
-  unmarkAsVisited(id) {
+  unmarkAsVisited(id, name, iso_a2, iso_a3) {
     setAxiosHeaders();
     axios
       .delete(`/api/v1/visited_countries/${id}`)
       .then((response) => {
         this.setState(
           {
-            modalShow: false,
-            loading: false,
+            selectedCountry: {
+              id: null,
+              name: name,
+              iso_a2: iso_a2,
+              iso_a3: iso_a3,
+              visited: false,
+            },
           },
           () => {
             this.getVisitedCountries();
@@ -142,7 +153,11 @@ class MapChart extends React.Component {
     return (
       <>
         {loading ? (
-          <Spinner animation="border" variant="info" />
+          <Spinner
+            style={{ position: "absolute", top: "50%", left: "50%" }}
+            animation="border"
+            variant="info"
+          />
         ) : (
           <>
             <ComposableMap

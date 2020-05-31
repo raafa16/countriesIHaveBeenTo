@@ -50,6 +50,6 @@ class Api::V1::VisitedCountriesController < ApplicationController
   end
 
   def visited_country_params
-    params.require(:visited_country).permit(:id, :name, :iso_a3)
+    params.require(:visited_country).permit(:id, :name, :iso_a2, :iso_a3)
   end
 end

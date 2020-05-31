@@ -1,21 +1,47 @@
+import _ from "lodash";
 import React from "react";
 import { Modal, Button, Image } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
+import { faMapMarkedAlt, faMap } from "@fortawesome/free-solid-svg-icons";
+
+import axios from "axios";
+
+import GalleryLinks from "./GalleryLinks";
+import GalleryLink from "./GalleryLink";
+import GalleryLinkForm from "./GalleryLinkForm";
 
 class ModalPopUp extends React.Component {
   constructor(props) {
     super(props);
     this.handleMarkAsVisited = this.handleMarkAsVisited.bind(this);
     this.handleUnmarkAsVisited = this.handleUnmarkAsVisited.bind(this);
+    this.state = {
+      galleryLinks: [],
+    };
+    // this.getGalleryLinks = this.getGalleryLinks.bind(this);
+    this.createGalleryLink = this.createGalleryLink.bind(this);
+  }
+
+  createGalleryLink(galleryLink) {
+    const galleryLinks = [galleryLinks, ...this.state.galleryLinks];
+    this.setState({ galleryLinks });
   }
 
   handleMarkAsVisited() {
-    this.props.markAsVisited(this.props.name, this.props.iso_a3);
+    this.props.markAsVisited(
+      this.props.name,
+      this.props.iso_a2,
+      this.props.iso_a3
+    );
   }
 
   handleUnmarkAsVisited() {
-    this.props.unmarkAsVisited(this.props.id);
+    this.props.unmarkAsVisited(
+      this.props.id,
+      this.props.name,
+      this.props.iso_a2,
+      this.props.iso_a3
+    );
   }
 
   render() {
@@ -29,7 +55,10 @@ class ModalPopUp extends React.Component {
         show={show}
         onHide={hide}
       >
-        <Modal.Header style={{ display: "flex" }} closeButton>
+        <Modal.Header
+          style={{ display: "flex", justifyContent: "center" }}
+          closeButton
+        >
           <Modal.Title id="contained-modal-title-vcenter">{name}</Modal.Title>
           <Image
             roundedCircle
@@ -38,26 +67,32 @@ class ModalPopUp extends React.Component {
             src={`https://www.countryflags.io/${iso_a2}/shiny/64.png`}
           />
         </Modal.Header>
-        <Modal.Body
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
+        <Modal.Body style={{ display: "flex", justifyContent: "center" }}>
           {loggedIn &&
             (visited ? (
               <Button variant="dark" onClick={this.handleUnmarkAsVisited}>
-                <FontAwesomeIcon icon={faMapMarkerAlt} /> Unmark as visited
+                <FontAwesomeIcon icon={faMap} /> Unmark as visited
               </Button>
             ) : (
               <Button variant="dark" onClick={this.handleMarkAsVisited}>
-                <FontAwesomeIcon icon={faMapMarkerAlt} /> Mark as visited
+                <FontAwesomeIcon icon={faMapMarkedAlt} /> Mark as visited
               </Button>
             ))}
-          <Button variant="dark">
-            <FontAwesomeIcon icon={faEye} /> See 353 memories
-          </Button>
         </Modal.Body>
+        {visited && (
+          <Modal.Footer style={{ display: "flex", justifyContent: "center" }}>
+            <GalleryLinkForm createGalleryLink={this.createGalleryLink} />
+            {!_.isEmpty(this.state.galleryLinks) ? (
+              <GalleryLinks>
+                {this.state.galleryLinks.map((galleryLink) => (
+                  <galleryLink key={galleryLink.id} galleryLink={galleryLink} />
+                ))}
+              </GalleryLinks>
+            ) : (
+              ""
+            )}
+          </Modal.Footer>
+        )}
       </Modal>
     );
   }
