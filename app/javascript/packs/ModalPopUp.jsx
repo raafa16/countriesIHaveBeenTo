@@ -85,7 +85,7 @@ class ModalPopUp extends React.Component {
             {!_.isEmpty(this.state.galleryLinks) ? (
               <GalleryLinks>
                 {this.state.galleryLinks.map((galleryLink) => (
-                  <galleryLink key={galleryLink.id} galleryLink={galleryLink} />
+                  <GalleryLink key={galleryLink.id} galleryLink={galleryLink} />
                 ))}
               </GalleryLinks>
             ) : (
