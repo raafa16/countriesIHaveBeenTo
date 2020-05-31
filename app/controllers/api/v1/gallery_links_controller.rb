@@ -51,6 +51,7 @@ class Api::V1::GalleryLinksController < ApplicationController
   end
 
   def set_gallery_link
+    set_visited_country
     @gallery_link = @visited_country.gallery_links.find(params[:id])
   end
 

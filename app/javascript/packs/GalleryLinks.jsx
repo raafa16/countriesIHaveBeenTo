@@ -11,10 +11,8 @@ class GalleryLinks extends React.Component {
           <table className="table">
             <thead>
               <tr>
-                <th scope="col">Gallery</th>
-                <th scope="col" className="text-right">
-                  Actions
-                </th>
+                <th scope="col">Gallery Links</th>
+                <th scope="col" className="text-right"></th>
               </tr>
             </thead>
             <tbody>{this.props.children}</tbody>
