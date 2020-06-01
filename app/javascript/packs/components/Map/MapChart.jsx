@@ -197,8 +197,10 @@ class MapChart extends React.Component {
                       visited
                         ? {
                             default: {
-                              fill: !_.isEmpty(visited.gallery_links)
-                                ? colorScale(visited.gallery_links.length)
+                              fill: !_.isEmpty(visitedCountry.gallery_links)
+                                ? colorScale(
+                                    visitedCountry.gallery_links.length
+                                  )
                                 : "#03B3B3",
                               outline: "none",
                             },
