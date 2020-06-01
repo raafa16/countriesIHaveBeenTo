@@ -1,4 +1,5 @@
 import React, { memo } from "react";
+import PropTypes from "prop-types";
 import _ from "lodash";
 import axios from "axios";
 import setAxiosHeaders from "../AxiosHeaders";
@@ -93,7 +94,7 @@ class MapChart extends React.Component {
             name: visitedCountry.name,
             iso_a2: visitedCountry.iso_a2,
             iso_a3: visitedCountry.iso_a3,
-            visited: visitedCountry,
+            visited: true,
           },
         });
       })
@@ -148,7 +149,6 @@ class MapChart extends React.Component {
 
   render() {
     const { setTooltipContent } = this.props;
-    const { loading } = this.state;
     return (
       <>
         <ComposableMap
@@ -167,9 +167,10 @@ class MapChart extends React.Component {
             {({ geographies }) =>
               geographies.map((geo) => {
                 const { NAME, ISO_A2, ISO_A3 } = geo.properties;
-                const visited = this.state.visitedCountries.find((vc) =>
+                const visitedCountry = this.state.visitedCountries.find((vc) =>
                   _.isEqual(vc.iso_a3, geo.properties.ISO_A3)
                 );
+                const visited = !_.isEmpty(visitedCountry);
 
                 return (
                   <Geography
@@ -182,7 +183,7 @@ class MapChart extends React.Component {
                     onClick={() => {
                       setTooltipContent("");
                       this.showModal(
-                        visited ? visited.id : null,
+                        visited ? visitedCountry.id : null,
                         NAME,
                         ISO_A2,
                         ISO_A3,
@@ -251,3 +252,7 @@ class MapChart extends React.Component {
 }
 
 export default memo(MapChart);
+
+MapChart.propTypes = {
+  setTooltipContent: PropTypes.func.isRequired,
+};

@@ -21,19 +21,16 @@ class GalleryLink extends React.Component {
   handleDestroy() {
     const { galleryLink } = this.props;
     setAxiosHeaders();
-    const confirmation = confirm("Are you sure?");
-    if (confirmation) {
-      axios
-        .delete(
-          `/api/v1/visited_countries/${galleryLink.visited_country_id}/gallery_links/${galleryLink.id}`
-        )
-        .then((response) => {
-          this.props.getGalleryLinks();
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
+    axios
+      .delete(
+        `/api/v1/visited_countries/${galleryLink.visited_country_id}/gallery_links/${galleryLink.id}`
+      )
+      .then((response) => {
+        this.props.getGalleryLinks();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   handleChange() {
@@ -102,4 +99,5 @@ export default GalleryLink;
 
 GalleryLink.propTypes = {
   galleryLink: PropTypes.object.isRequired,
+  loggedIn: PropTypes.bool.isRequired,
 };

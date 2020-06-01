@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import _ from "lodash";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,11 +12,11 @@ import { Modal, Button, Image } from "react-bootstrap";
 class ModalPopUp extends React.Component {
   constructor(props) {
     super(props);
-    this.handleMarkAsVisited = this.handleMarkAsVisited.bind(this);
-    this.handleUnmarkAsVisited = this.handleUnmarkAsVisited.bind(this);
     this.state = {
       galleryLinks: [],
     };
+    this.handleMarkAsVisited = this.handleMarkAsVisited.bind(this);
+    this.handleUnmarkAsVisited = this.handleUnmarkAsVisited.bind(this);
     this.getGalleryLinks = this.getGalleryLinks.bind(this);
     this.createGalleryLink = this.createGalleryLink.bind(this);
   }
@@ -132,3 +133,16 @@ class ModalPopUp extends React.Component {
 }
 
 export default ModalPopUp;
+
+ModalPopUp.propTypes = {
+  id: PropTypes.number,
+  name: PropTypes.string.isRequired,
+  iso_a2: PropTypes.string.isRequired,
+  iso_a3: PropTypes.string.isRequired,
+  visited: PropTypes.bool,
+  loggedIn: PropTypes.bool.isRequired,
+  show: PropTypes.bool.isRequired,
+  hide: PropTypes.func.isRequired,
+  markAsVisited: PropTypes.func.isRequired,
+  unmarkAsVisited: PropTypes.func.isRequired,
+};

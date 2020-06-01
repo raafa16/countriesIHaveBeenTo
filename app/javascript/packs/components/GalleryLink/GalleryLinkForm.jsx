@@ -65,4 +65,5 @@ export default GalleryLink;
 
 GalleryLink.propTypes = {
   createGalleryLink: PropTypes.func.isRequired,
+  visitedCountryId: PropTypes.number.isRequired,
 };
