@@ -1,14 +1,12 @@
-import _ from "lodash";
 import React from "react";
-import { Modal, Button, Image } from "react-bootstrap";
+import _ from "lodash";
+import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkedAlt, faMap } from "@fortawesome/free-solid-svg-icons";
-
-import axios from "axios";
-
-import GalleryLinks from "./GalleryLinks";
-import GalleryLink from "./GalleryLink";
-import GalleryLinkForm from "./GalleryLinkForm";
+import GalleryLinks from "../../components/GalleryLink/GalleryLinks";
+import GalleryLink from "../../components/GalleryLink/GalleryLink";
+import GalleryLinkForm from "../../components/GalleryLink/GalleryLinkForm";
+import { Modal, Button, Image } from "react-bootstrap";
 
 class ModalPopUp extends React.Component {
   constructor(props) {

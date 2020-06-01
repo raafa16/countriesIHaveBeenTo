@@ -5,7 +5,7 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import ReactTooltip from "react-tooltip";
-import MapChart from "./MapChart";
+import MapChart from "./components/Map/MapChart";
 
 function App() {
   const [content, setContent] = useState("");

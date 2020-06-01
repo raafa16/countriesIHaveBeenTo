@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Button, Col, Form } from "react-bootstrap";
 import axios from "axios";
-import setAxiosHeaders from "./AxiosHeaders";
+import setAxiosHeaders from "../AxiosHeaders";
 
 class GalleryLink extends React.Component {
   constructor(props) {

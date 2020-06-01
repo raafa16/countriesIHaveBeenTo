@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 import _ from "lodash";
 import axios from "axios";
-import setAxiosHeaders from "./AxiosHeaders";
+import setAxiosHeaders from "../AxiosHeaders";
 import { scaleLinear } from "d3-scale";
 import {
   Graticule,
@@ -10,7 +10,7 @@ import {
   Geographies,
   Geography,
 } from "react-simple-maps";
-import ModalPopUp from "./ModalPopUp";
+import ModalPopUp from "../../components/Modal/ModalPopUp";
 
 const geoUrl =
   "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-50m-simplified.json";

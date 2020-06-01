@@ -7,7 +7,7 @@ import {
   faExternalLinkAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
-import setAxiosHeaders from "./AxiosHeaders";
+import setAxiosHeaders from "../AxiosHeaders";
 
 class GalleryLink extends React.Component {
   constructor(props) {
