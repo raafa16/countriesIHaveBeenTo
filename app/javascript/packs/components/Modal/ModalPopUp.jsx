@@ -123,7 +123,7 @@ class ModalPopUp extends React.Component {
                 ))}
               </GalleryLinks>
             ) : (
-              ""
+              <>No links to gallery added yet</>
             )}
           </Modal.Footer>
         )}
