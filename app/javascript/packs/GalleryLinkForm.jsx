@@ -45,7 +45,7 @@ class GalleryLink extends React.Component {
               id="link"
               name="link"
               ref={this.linkRef}
-              type="text"
+              type="url"
               placeholder="Add the link to your gallery here..."
               required
             />

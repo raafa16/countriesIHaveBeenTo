@@ -85,27 +85,33 @@ class ModalPopUp extends React.Component {
             src={`https://www.countryflags.io/${iso_a2}/shiny/64.png`}
           />
         </Modal.Header>
-        <Modal.Body style={{ display: "flex", justifyContent: "center" }}>
-          {loggedIn &&
-            (visited ? (
+        {loggedIn &&
+          (visited ? (
+            <Modal.Body style={{ display: "flex", justifyContent: "center" }}>
               <Button
                 variant="outline-dark"
                 onClick={this.handleUnmarkAsVisited}
               >
                 <FontAwesomeIcon icon={faMap} /> Unmark as visited
               </Button>
-            ) : (
+            </Modal.Body>
+          ) : (
+            <Modal.Body style={{ display: "flex", justifyContent: "center" }}>
               <Button variant="outline-dark" onClick={this.handleMarkAsVisited}>
                 <FontAwesomeIcon icon={faMapMarkedAlt} /> Mark as visited
               </Button>
-            ))}
-        </Modal.Body>
+            </Modal.Body>
+          ))}
         {visited && (
           <Modal.Footer style={{ display: "flex", justifyContent: "center" }}>
-            <GalleryLinkForm
-              createGalleryLink={this.createGalleryLink}
-              visitedCountryId={id}
-            />
+            {loggedIn ? (
+              <GalleryLinkForm
+                createGalleryLink={this.createGalleryLink}
+                visitedCountryId={id}
+              />
+            ) : (
+              ""
+            )}
             {!_.isEmpty(this.state.galleryLinks) ? (
               <GalleryLinks>
                 {this.state.galleryLinks.map((galleryLink) => (

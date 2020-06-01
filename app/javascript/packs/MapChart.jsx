@@ -171,8 +171,6 @@ class MapChart extends React.Component {
                   _.isEqual(vc.iso_a3, geo.properties.ISO_A3)
                 );
 
-                console.log(visited);
-
                 return (
                   <Geography
                     key={geo.rsmKey}

@@ -68,7 +68,7 @@ class GalleryLink extends React.Component {
             id={`${galleryLink.id}`}
             name="galleryLink"
             ref={this.galleryLinkRef}
-            type="text"
+            type="url"
             disabled={!loggedIn}
             onChange={this.handleChange}
             defaultValue={galleryLink.link}
@@ -80,12 +80,18 @@ class GalleryLink extends React.Component {
           className="text-right"
           style={{ display: "flex", justifyContent: "space-evenly" }}
         >
-          <Button variant="outline-success" onClick={this.handleDestroy}>
+          <Button
+            variant="outline-success"
+            href={galleryLink.link}
+            target="_blank"
+          >
             <FontAwesomeIcon icon={faExternalLinkAlt} />
           </Button>
-          <Button variant="outline-danger" onClick={this.handleDestroy}>
-            <FontAwesomeIcon icon={faTrashAlt} />
-          </Button>
+          {loggedIn && (
+            <Button variant="outline-danger" onClick={this.handleDestroy}>
+              <FontAwesomeIcon icon={faTrashAlt} />
+            </Button>
+          )}
         </td>
       </tr>
     );
